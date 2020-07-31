@@ -48,15 +48,23 @@ When designing and implementing your solution ensure that you keep in mind separ
 concerns, performance, and testing.
 
 Example
+
 Input file
+
+```
 5 5
 1 2 N
 LFLFLFLFF
 3 3 E
 FFRFFRFRRF
+```
+
 Result
+
+```
 1 3 N
 5 1 E
+```
 
 ## Requirements
 
