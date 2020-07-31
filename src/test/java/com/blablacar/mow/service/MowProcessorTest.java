@@ -103,6 +103,11 @@ public class MowProcessorTest {
 	 * 2 3 E
 	 * 3 3 W
 	 * </pre>
+	 * or 
+	 * <pre>
+	 * 1 3 E
+	 * 2 3 E
+	 * </>
 	*/
 	@Test
 	public void testConcurrent() {
@@ -115,14 +120,20 @@ public class MowProcessorTest {
 		mp = new MowProcessor(lawn, mowers);
 		mp.mow();
 
-		// Test mow position
-		assertEquals(2, mp.getMowers().get(0).getPosition().getCoordinates().getX());
-		assertEquals(3, mp.getMowers().get(0).getPosition().getCoordinates().getY());
-		assertEquals(Orientation.EAST, mp.getMowers().get(0).getPosition().getOrientation());
-
-		assertEquals(3, mp.getMowers().get(1).getPosition().getCoordinates().getX());
-		assertEquals(3, mp.getMowers().get(1).getPosition().getCoordinates().getY());
-		assertEquals(Orientation.WEST, mp.getMowers().get(1).getPosition().getOrientation());
+		// Test mow position : one of the mower must remain on same position
+		if( 2 == mp.getMowers().get(0).getPosition().getCoordinates().getX()) 
+		{	
+			// first mower moved to 2 3 E
+			// 2nd mower stayed in 3 3 W
+			assertEquals(3, mp.getMowers().get(1).getPosition().getCoordinates().getX());
+			assertEquals(3, mp.getMowers().get(1).getPosition().getCoordinates().getY());
+		} else if (1 ==  mp.getMowers().get(0).getPosition().getCoordinates().getX()) {
+			// first mower stayed in 1 3 E
+			// 2nd mower moved to 2 3 E
+			assertEquals(2, mp.getMowers().get(1).getPosition().getCoordinates().getX());
+			assertEquals(3, mp.getMowers().get(1).getPosition().getCoordinates().getY());
+		}
+		
 	}
 	
 	private Mower buildMover(String name, int x, int y, Orientation o, Command... commands) {
